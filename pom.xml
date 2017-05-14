@@ -74,6 +74,12 @@
     </dependency>
 
     <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-reactive-streams</artifactId>
+      <version>3.4.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.jooq</groupId>
       <artifactId>jooq</artifactId>
       <version>3.9.1</version>

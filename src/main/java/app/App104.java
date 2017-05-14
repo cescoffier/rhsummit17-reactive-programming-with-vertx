@@ -1,8 +1,6 @@
 package app;
 
-import app.utilities.AuditVerticle;
-import app.utilities.Database;
-import app.utilities.Product;
+import app.utilities.*;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.rxjava.core.AbstractVerticle;
@@ -15,6 +13,8 @@ import io.vertx.rxjava.ext.web.client.HttpResponse;
 import io.vertx.rxjava.ext.web.client.WebClient;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 import rx.Single;
 
 import static app.utilities.SockJsHelper.getSockJsHandler;
@@ -38,10 +38,20 @@ public class App104 extends AbstractVerticle {
         Router router = Router.router(vertx);
         router.get("/eventbus/*").handler(getSockJsHandler(vertx));
         router.get("/assets/*").handler(StaticHandler.create());
+
+        // Reactive Rest API
         router.get("/products").handler(this::list);
         router.route().handler(BodyHandler.create());
         router.post("/products").handler(this::add);
 
+        // Reactive streams
+        Publisher<Integer> publisher =
+            new RandomIntegerPublisher();
+        Subscriber<Integer> subscriber =
+            new RandomIntegerSubscriber(vertx);
+        publisher.subscribe(subscriber);
+
+        // Initialization
         Database.initialize(vertx)
             .flatMap(db -> {
                 database = db;

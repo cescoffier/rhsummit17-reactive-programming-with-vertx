@@ -18,8 +18,12 @@ public class SockJsHelper {
         BridgeOptions options = new BridgeOptions();
         options.addInboundPermitted(
             new PermittedOptions().setAddress("products"));
+        options.addInboundPermitted(
+            new PermittedOptions().setAddress("random"));
         options.addOutboundPermitted(
             new PermittedOptions().setAddress("products"));
+        options.addOutboundPermitted(
+            new PermittedOptions().setAddress("random"));
         sockJSHandler.bridge(options);
         return sockJSHandler;
     }
